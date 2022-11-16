@@ -30,16 +30,49 @@ bool Check(int N, int pos) { return (bool)(N & (1 << pos)); }
 
 /****************  TEMPLATE  ********************/
 
-bool isPowerOfThree(int n)
+int myAtoi(string s)
 {
-    const double eps = 1e-9;
-    if (n <= 0)
-        return false;
-    double y = (log2(n) / log2(3));
-    // printf("%0.5lf    %0.5lf\n", x, y);
-    if (y - floor(y) < eps)
-        return true;
-    return false;
+    long long ans = 0;
+    bool minus = false, stop = false;
+    int i = 0;
+    while (s[i] == ' ')
+        i++;
+    if (s[i] == '-')
+        minus = true;
+    i++;
+    // see("minus ", minus);
+    while ((i < s.size()) && (isdigit(s[i])))
+    {
+        if ((ans > INT_MAX) && !minus)
+        {
+            // see("hello", 1);
+            return INT_MAX;
+        }
+
+        if (minus && (-ans < INT_MIN))
+        {
+            // see("ans ", ans);
+            return INT_MIN;
+        }
+        ans = ans * 10 + (s[i] - '0');
+        i++;
+        // see("ans", ans);
+    }
+    // cout << ans << endl;
+    if ((ans > INT_MAX) && !minus)
+    {
+        // see("hello", 1);
+        return INT_MAX;
+    }
+
+    if (minus && (-ans < INT_MIN))
+    {
+        // see("ans ", ans);
+        return INT_MIN;
+    }
+    if (minus)
+        return -ans;
+    return ans;
 }
 
 int main()
@@ -49,7 +82,9 @@ int main()
     cout.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
+    string s =
+        "21474836460";
+    cout << myAtoi(s);
 
-    int n = pow(3, 9);
-    cout << isPowerOfThree(n) << endl;
+    // cout << INT_MIN << endl;
 }

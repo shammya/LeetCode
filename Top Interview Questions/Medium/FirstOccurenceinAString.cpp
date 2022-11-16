@@ -30,16 +30,35 @@ bool Check(int N, int pos) { return (bool)(N & (1 << pos)); }
 
 /****************  TEMPLATE  ********************/
 
-bool isPowerOfThree(int n)
+int rabin_karp(string s, string t)
 {
-    const double eps = 1e-9;
-    if (n <= 0)
-        return false;
-    double y = (log2(n) / log2(3));
-    // printf("%0.5lf    %0.5lf\n", x, y);
-    if (y - floor(y) < eps)
-        return true;
-    return false;
+    const int p = 31;
+    const int m = 1e9 + 9;
+    int S = s.size(), T = t.size();
+    vector<long long> p_pow(max(T, S));
+    p_pow[0] = 1;
+    for (int i = 1; i < p_pow.size(); i++)
+        p_pow[i] = (p_pow[i - 1] * p) % m;
+    vector<long long> h(T + 1, 0);
+    for (int i = 0; i < T; i++)
+        h[i + 1] = (h[i] + (t[i] - 'a' + 1) * p_pow[i]) % m; // ith character is mapped to i+1 th index
+    long long hs = 0;
+    for (int i = 0; i < S; i++)
+        hs = (hs + (s[i] - 'a' + 1) * p_pow[i]) % m;
+
+    long long curhs = 0;
+    for (int i = 0; i + S - 1 < T; i++)
+    {
+        curhs = (h[i + S] - h[i] + m) % m;
+        if (curhs == (hs * p_pow[i]) % m)
+            return i;
+    }
+    return -1;
+}
+
+int strStr(string haystack, string needle)
+{
+    return rabin_karp(needle, haystack);
 }
 
 int main()
@@ -49,7 +68,7 @@ int main()
     cout.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-
-    int n = pow(3, 9);
-    cout << isPowerOfThree(n) << endl;
+    string needle = "leet";
+    string haystack = "asdfleetcode";
+    cout << "first occurence at  : " << strStr(haystack, needle);
 }

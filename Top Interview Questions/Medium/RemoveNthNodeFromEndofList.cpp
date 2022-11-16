@@ -30,16 +30,27 @@ bool Check(int N, int pos) { return (bool)(N & (1 << pos)); }
 
 /****************  TEMPLATE  ********************/
 
-bool isPowerOfThree(int n)
+ListNode *removeNthFromEnd(ListNode *head, int n)
 {
-    const double eps = 1e-9;
-    if (n <= 0)
-        return false;
-    double y = (log2(n) / log2(3));
-    // printf("%0.5lf    %0.5lf\n", x, y);
-    if (y - floor(y) < eps)
-        return true;
-    return false;
+    ListNode *temp = head;
+    int len = 0;
+    while (temp)
+    {
+        temp = temp->next;
+        len++;
+    }
+    len = n - len;
+    if (len == 0)
+        return head->next;
+    temp = head;
+    while (len != 1)
+    {
+        temp = temp->next;
+        len--;
+    }
+    temp->next = (temp->next)->next;
+
+    return head;
 }
 
 int main()
@@ -49,7 +60,4 @@ int main()
     cout.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-
-    int n = pow(3, 9);
-    cout << isPowerOfThree(n) << endl;
 }

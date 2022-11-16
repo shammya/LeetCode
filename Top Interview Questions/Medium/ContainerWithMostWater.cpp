@@ -30,16 +30,20 @@ bool Check(int N, int pos) { return (bool)(N & (1 << pos)); }
 
 /****************  TEMPLATE  ********************/
 
-bool isPowerOfThree(int n)
+int area(vector<int> &height, int i, int j)
 {
-    const double eps = 1e-9;
-    if (n <= 0)
-        return false;
-    double y = (log2(n) / log2(3));
-    // printf("%0.5lf    %0.5lf\n", x, y);
-    if (y - floor(y) < eps)
-        return true;
-    return false;
+    return (j - i) * min(height[j], height[i]);
+}
+int maxArea(vector<int> &height)
+{
+    int ans = 0;
+    int i = 0, j = height.size() - 1;
+    while (i < j)
+    {
+        ans = max(ans, area(height, i, j));
+        (height[i] > height[j]) ? j-- : i++;
+    }
+    return ans;
 }
 
 int main()
@@ -49,7 +53,6 @@ int main()
     cout.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-
-    int n = pow(3, 9);
-    cout << isPowerOfThree(n) << endl;
+    vector<int> heights({1, 8, 6, 2, 5, 4, 8, 3, 7});
+    cout << "max araea : " << maxArea(heights) << endl;
 }

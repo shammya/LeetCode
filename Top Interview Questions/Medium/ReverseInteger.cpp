@@ -30,16 +30,18 @@ bool Check(int N, int pos) { return (bool)(N & (1 << pos)); }
 
 /****************  TEMPLATE  ********************/
 
-bool isPowerOfThree(int n)
+int reverse(int x)
 {
-    const double eps = 1e-9;
-    if (n <= 0)
-        return false;
-    double y = (log2(n) / log2(3));
-    // printf("%0.5lf    %0.5lf\n", x, y);
-    if (y - floor(y) < eps)
-        return true;
-    return false;
+    int ans = 0;
+
+    while (x)
+    {
+        if (ans > INT_MAX || ans < INT_MIN)
+            return 0;
+        ans = (ans * 10) + x % 10;
+        x = x / 10;
+    }
+    return ans;
 }
 
 int main()
@@ -49,7 +51,4 @@ int main()
     cout.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-
-    int n = pow(3, 9);
-    cout << isPowerOfThree(n) << endl;
 }

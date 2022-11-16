@@ -30,16 +30,57 @@ bool Check(int N, int pos) { return (bool)(N & (1 << pos)); }
 
 /****************  TEMPLATE  ********************/
 
-bool isPowerOfThree(int n)
+void mergeSort(vector<int> &a, int l, int r)
 {
-    const double eps = 1e-9;
-    if (n <= 0)
-        return false;
-    double y = (log2(n) / log2(3));
-    // printf("%0.5lf    %0.5lf\n", x, y);
-    if (y - floor(y) < eps)
-        return true;
-    return false;
+    if (l < r)
+    {
+        int m = l + (r - l) / 2;
+        mergeSort(a, l, m);
+        mergeSort(a, m + 1, r);
+        merge(a, l, m, r);
+    }
+}
+void merge(vector<int> &a, int l, int m, int r)
+{
+    int i, j, k, n1, n2;
+    n1 = m - l + 1;
+    n2 = r - m;
+    int L[n1], R[n2];
+    for (i = 0; i < n1; i++)
+    {
+        L[i] = a[l + i];
+    }
+    for (j = 0; j < n2; j++)
+    {
+        R[j] = a[m + 1 + j];
+    }
+    i = 0;
+    k = l;
+    j = 0;
+    while (i < n1 && j < n2)
+    {
+        if (L[i] > R[j])
+        {
+            a[k++] = R[j++];
+        }
+        else
+        {
+            a[k++] = L[i++];
+        }
+    }
+    while (i < n1)
+    {
+        a[k++] = L[i++];
+    }
+    while (j < n2)
+    {
+        a[k++] = R[j++];
+    }
+}
+
+void sortColors(vector<int> &nums)
+{
+    mergeSort(nums, 0, nums.size() - 1);
 }
 
 int main()
@@ -49,7 +90,4 @@ int main()
     cout.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-
-    int n = pow(3, 9);
-    cout << isPowerOfThree(n) << endl;
 }

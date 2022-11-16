@@ -1,3 +1,4 @@
+
 /********   In the name of Allah, the most gracious, the most merciful ********/
 #include <bits/stdc++.h>
 
@@ -30,16 +31,29 @@ bool Check(int N, int pos) { return (bool)(N & (1 << pos)); }
 
 /****************  TEMPLATE  ********************/
 
-bool isPowerOfThree(int n)
+int lengthOfLongestSubstring(string s)
 {
-    const double eps = 1e-9;
-    if (n <= 0)
-        return false;
-    double y = (log2(n) / log2(3));
-    // printf("%0.5lf    %0.5lf\n", x, y);
-    if (y - floor(y) < eps)
-        return true;
-    return false;
+    unordered_map<char, int> table;
+    int i = 0, j = 1, ans = 1;
+    if (s.size() <= 1)
+        return s.size();
+    table[s[0]]++;
+    while (j < s.size())
+    {
+        table[s[j]]++;
+        if (table[s[j]] > 1)
+        {
+            ans = max(ans, j - i);
+            while (table[s[j]] != 1)
+            {
+                table[s[i]]--;
+                i++;
+            }
+        }
+        j++;
+    }
+    ans = max(ans, j - i);
+    return ans;
 }
 
 int main()
@@ -49,7 +63,6 @@ int main()
     cout.tie(0);
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
-
-    int n = pow(3, 9);
-    cout << isPowerOfThree(n) << endl;
+    string s = "a bc d e f";
+    cout << s << " longest non repeating substring length : " << lengthOfLongestSubstring(s) << endl;
 }
